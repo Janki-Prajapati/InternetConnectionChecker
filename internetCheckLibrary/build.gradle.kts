@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("maven-publish") // Adding the maven-publish plugin
 }
 
 android {
@@ -31,9 +32,26 @@ android {
         jvmTarget = "1.8"
     }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.Janki-Prajapati"
+                artifactId = "InternetConnectionChecker"
+                version = "0.1.0"
+            }
+        }
+
+        repositories {
+            maven {
+                url = uri("https://jitpack.io")
+            }
+        }
+    }
+}
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
